@@ -1,35 +1,26 @@
 # xyc-MLRG
 MLRG的复现
 
-好的，我来给你梳理一下 **复现 MLRG 项目的完整流程**，并且尽量贴合实际操作，避免常见报错。这个复现流程分几个大阶段：环境准备 → 数据集获取 → 依赖安装 → 训练阶段 → 测试评估。
-
----
-
-## **1️⃣ 环境准备**
-
-MLRG 官方建议 Python 3.9，你之前提到 numpy 2.2.3 和 Python 3.9 不兼容的问题，所以我们可以做如下调整：
+## 一、环境准备
 
 ### 步骤：
-
-```bash
-# 创建新的 Conda 环境
-conda create -n mlrg python=3.9 -y
+**创建新的 Conda 环境**
+conda create -n mlrg python=3.9.0
 conda activate mlrg
 
-# 安装 PyTorch + CUDA (根据你 GPU 的版本)
-# 例如 CUDA 11.8
-pip install torch==2.2.0+cu118 torchvision==0.17.1+cu118 torchaudio==2.2.0+cu118 -f https://download.pytorch.org/whl/torch_stable.html
-```
+**安装依赖**
+下载requirements.txt中的内容
+pip install -r requirements.txt
 
-> ⚠️ 注意：`numpy==2.2.3` 官方是打错了版本号，Python3.9 支持的最新 numpy 是 `1.25.x`，所以改成：
+#### **注意**
+安装pytorch时需注意版本
+pip install torch== 2.3.1 torchvision==0.18.1 --index-url https://download.pytorch.org/whl/cu118
 
-```bash
+其次，txt中的numpy==2.2.3与他要求的python==3.9冲突
 pip install numpy==1.25.2
-```
 
----
 
-## **2️⃣ 数据集准备**
+##  数据集准备
 
 MLRG 使用的是 **MIMIC-CXR** 数据集（公开但需要申请）：
 
@@ -38,17 +29,15 @@ MLRG 使用的是 **MIMIC-CXR** 数据集（公开但需要申请）：
 
 2. 下载并解压：
 
-```bash
 # 假设下载到 /data/MIMIC-CXR/
 tar -xvf mimic-cxr-2.0.0.tar.gz -C /data/MIMIC-CXR/
-```
 
 3. 结构整理（官方 repo 有脚本整理多视图和纵向历史）：
 
-```bash
+
 cd MLRG/tools
 python prepare_dataset.py --data_root /data/MIMIC-CXR/ --output_root ./data/MIMIC-CXR/
-```
+
 
 > 这个脚本会生成：
 >
@@ -62,17 +51,17 @@ python prepare_dataset.py --data_root /data/MIMIC-CXR/ --output_root ./data/MIMI
 
 MLRG 的 `requirements.txt`：
 
-```bash
+
 pip install -r requirements.txt
-```
+
 
 如果遇到 **radgraph 安装报错**，可以尝试：
 
-```bash
+
 git clone https://github.com/stanfordmlgroup/RaDGraph.git
 cd RaDGraph
 pip install -e .
-```
+
 
 > 如果还有报错，可以先跳过 RaDGraph，复现训练与评估流程后再加。
 
