@@ -21,10 +21,7 @@ pip install -r requirements.txt
 pip install torch== 2.3.1 torchvision==0.18.1 --index-url https://download.pytorch.org/whl/cu118
 ```
 
-其次，txt中的numpy== 2.2.3与他要求的python==3.9冲突
-```
-pip install numpy==1.25.2
-```
+其次，txt中的numpy== 2.2.3与他要求的python==3.9冲突,需要对numpy降版本
 
 ##  二、数据集准备
 
